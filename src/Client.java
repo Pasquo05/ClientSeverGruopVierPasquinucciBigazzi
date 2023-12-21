@@ -21,6 +21,8 @@ public class Client  extends Thread {
                 e.printStackTrace();
             }
         }
+
+        //commento
     }
 
 
