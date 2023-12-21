@@ -11,7 +11,7 @@ public class Server {
                 System.out.println("in attesa su " + port);
                 Socket socket = serverSocket.accept();
                 System.out.println("ricevuta connessione:"  + socket.getInetAddress() + ":" + socket.getPort());
-                (new ClientHandler(socket)).start();
+                (new Client(socket)).start();
             }
         } catch (IOException e) {
             e.printStackTrace();
