@@ -3,6 +3,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClothingStoreClient {
     public static void main(String[] args) {
@@ -13,10 +15,14 @@ public class ClothingStoreClient {
             PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
 
             // Ricevi e stampa il catalogo dal server
+
             String catalogItem;
-            while (!(catalogItem = input.readLine()).equals("")) {
-                System.out.println(catalogItem);
+
+            for( int i=0 ; i<4 ; i++) {
+                catalogItem = input.readLine();
+                System.out.println( catalogItem );
             }
+
 
             // Richiedi all'utente di selezionare un prodotto
             System.out.println("Seleziona un prodotto inserendo il numero corrispondente:");
@@ -25,9 +31,9 @@ public class ClothingStoreClient {
 
             // Invia la selezione al server
             output.println(selection);
-
             // Ricevi e stampa la conferma dal server
             String confirmation = input.readLine();
+
             System.out.println("Risposta dal server: " + confirmation);
 
             // Chiudi le risorse
