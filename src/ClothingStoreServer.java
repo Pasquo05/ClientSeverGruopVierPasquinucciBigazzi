@@ -4,6 +4,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.lang.String;
@@ -31,23 +32,19 @@ public class ClothingStoreServer {
     }
 
     private static void handleClient(Socket clientSocket) {
+        int totale = 0 ;
+        int flag = 0 ;
+
         try {
             BufferedReader input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             PrintWriter output = new PrintWriter(clientSocket.getOutputStream(), true);
 
-            // Invia il catalogo al client
-            sendCatalogToClient(output);
 
 
-            // Ricevi la selezione del cliente e aggiungi al carrello
-            String selection = input.readLine();
+            functionCasualServer(input,output );
 
-            System.out.println(selection);
 
-            addToCart(selection);
 
-            // Invia conferma al client
-            output.println("Prodotto aggiunto al carrello correttamente.");
 
             // Chiudi le risorse
             input.close();
@@ -67,9 +64,21 @@ public class ClothingStoreServer {
 
     }
 
-    private static void addToCart(String selection) {
+    private static int addToCart(String selection) {
+    int totale = 0  ;
+
         try {
             int productIndex = Integer.parseInt(selection) - 1;
+
+            if ( productIndex == 0 ) {
+                totale += 10 ;
+            }
+            if ( productIndex == 1 ) {
+                totale += 15 ;
+            }
+            if ( productIndex == 2 ) {
+                totale += 56 ;
+            }
 
             System.out.println(productIndex);
 
@@ -85,14 +94,43 @@ public class ClothingStoreServer {
             // Gestire eventuali errori nella conversione o selezione non valida
             e.printStackTrace();
         }
+
+        return totale;
     }
 
     private static void initializeCatalog() {
-        catalog.add("Maglietta");
-        catalog.add("Pantaloni");
-        catalog.add("Scarpe");
+        catalog.add("Maglietta --> 10$ ");
+        catalog.add("Pantaloni --> 15$ ");
+        catalog.add("Scarpe -->  56$ ");
+        catalog.add("Uscita dal carello");
         // Aggiungi altri prodotti secondo necessità
     }
+
+    private static void  functionCasualServer(BufferedReader input,PrintWriter output ) throws IOException , UnknownHostException {
+
+        int totale = 0 ;
+
+        // Invia il catalogo al client
+        sendCatalogToClient(output);
+
+        // Ricevi la selezione del cliente e aggiungi al carrello
+        String selection = input.readLine();
+
+        System.out.println(selection);
+
+        totale += addToCart(selection);
+
+        System.out.println( " questo e il totale --> " + totale );
+
+        // Invia conferma al client
+        output.println("Prodotto aggiunto al carrello correttamente.");
+
+        output.println("Clicca 1 se vuoi conitnuare ad acquistare, clicca 2 se vuoi smettere di acquistare");
+
+    }
+
+
+
 }
 
 
